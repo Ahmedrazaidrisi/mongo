@@ -58,6 +58,8 @@ void KMeansClustering::ClusterFeatures(WorkingSet* const workingSet)
         // Recalculate centroids
         // Break if centroids don't change
     }
+
+    // Add/Update clusterID field in the working set
 }
 
 }  // namespace mongo
