@@ -43,7 +43,7 @@ class KMeansClustering {
 public:
     KMeansClustering();
 
-    void ClusterFeature(WorkingSet* const workingSet);
+    void ClusterFeatures(WorkingSet* const workingSet);
 
 private:
     struct Cluster

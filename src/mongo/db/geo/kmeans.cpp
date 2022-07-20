@@ -46,7 +46,7 @@ KMeansClustering::KMeansClustering()
 {
 }
 
-void KMeansClustering::ClusterFeature(WorkingSet* const workingSet)
+void KMeansClustering::ClusterFeatures(WorkingSet* const workingSet)
 {
     // Read all geometries from working set into mapIDtoGeom
 

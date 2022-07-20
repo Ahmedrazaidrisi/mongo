@@ -36,6 +36,7 @@
 #include "mongo/db/exec/scoped_timer.h"
 #include "mongo/db/exec/working_set_common.h"
 #include "mongo/util/assert_util.h"
+#include "mongo/db/geo/kmeans.h"
 
 namespace mongo {
 
@@ -95,6 +96,9 @@ PlanStage::StageState NearStage::doWork(WorkingSetID* out) {
     } else if (SearchState_Advancing == _searchState) {
         nextState = advanceNext(&toReturn);
     } else {
+        KMeansClustering kmClustering;
+        kmClustering.ClusterFeatures(_workingSet);
+
         invariant(SearchState_Finished == _searchState);
         nextState = PlanStage::IS_EOF;
     }
