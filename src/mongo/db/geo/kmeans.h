@@ -54,7 +54,7 @@ private:
 
 private:
     std::map<WorkingSetID, std::unique_ptr<StoredGeometry> > mapIDtoGeom;
-    std::vector<Cluster> clusters; 
+    std::vector<std::unique_ptr<Cluster> > clusters; 
 };
 
 }  // namespace mongo
