@@ -60,6 +60,14 @@ void KMeansClustering::ClusterFeatures(WorkingSet* const workingSet)
     }
 
     // Add/Update clusterID field in the working set
+    /*for (int i = 0; i < clusters.size(); i++)
+    {
+        for (int e = 0; e < clusters[i]->elements.size(); e++)
+        {
+            // Get clusters[i]->elements[e] from workingSet 
+            // Store clusterID = e into that element
+        }
+    }*/
 }
 
 }  // namespace mongo
