@@ -38,7 +38,10 @@
 #include "mongo/util/transitional_tools_do_not_use/vector_spooling.h"
 
 #define MONGO_LOGV2_DEFAULT_COMPONENT ::mongo::logv2::LogComponent::kQuery
+
+// Hardcode these values for now
 #define MAX_CLUSTERING_ITERATIONS 5
+#define NUM_CLUSTERS 5
 
 namespace mongo {
 
@@ -46,11 +49,34 @@ KMeansClustering::KMeansClustering()
 {
 }
 
-void KMeansClustering::ClusterFeatures(WorkingSet* const workingSet)
+void KMeansClustering::ClusterFeatures(WorkingSet* const workingSet, const string& field)
 {
     // Read all geometries from working set into mapIDtoGeom
+    std::vector<std::unique_ptr<StoredGeometry>> geometries;
+    for (WorkingSetID i = 0; i < workingSet->getSize(); i++)
+    {
+        WorkingSetMember* wsm = workingSet->get(i);
+        StoredGeometry::extractGeometries(wsm->doc.value().toBson(), field, &geometries, true);
+        geoms.push_back(std::move(geometries[0]));
+        geometries.clear();
+        workingSet->free(i);
+    }
 
     // Create empty clisters with random centroinds
+    std::srand(std::time(nullptr)); // use current time as seed for random generator
+    clusters.resize(NUM_CLUSTERS);
+    for (int i = 0; i < NUM_CLUSTERS; i++)
+    {
+        std::unique_ptr<Cluster> cluster(new Cluster());
+                
+        // Divide the range of elements in geoms array into equal NUM_CLUSTERS parts
+        // and get random element from each of the part for the corresponding cluster. 
+        int centroidIdx = (std::rand() % (geoms.size() / NUM_CLUSTERS)) + (geoms.size() / NUM_CLUSTERS) * i;
+        cluster->centroid = geoms[centroidIdx]->geometry.getPoint().oldPoint;
+        clusters[i] = std::move(cluster);
+    }
+
+    // Cluster features
     for (int iteration = 0; iteration < MAX_CLUSTERING_ITERATIONS; iteration++)
     {
         // Clear clusters content

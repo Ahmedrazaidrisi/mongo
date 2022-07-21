@@ -95,10 +95,11 @@ PlanStage::StageState NearStage::doWork(WorkingSetID* out) {
         nextState = bufferNext(&toReturn);
     } else if (SearchState_Advancing == _searchState) {
         nextState = advanceNext(&toReturn);
+        if (nextState == PlanStage::ADVANCED && _workingSet->getSize() > 16990) {
+            KMeansClustering kmClustering;
+            kmClustering.ClusterFeatures(_workingSet, "geometry");
+        }
     } else {
-        KMeansClustering kmClustering;
-        kmClustering.ClusterFeatures(_workingSet);
-
         invariant(SearchState_Finished == _searchState);
         nextState = PlanStage::IS_EOF;
     }

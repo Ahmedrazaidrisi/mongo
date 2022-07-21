@@ -17,7 +17,7 @@ env.Library(
 # Geometry / BSON parsing and wrapping
 env.Library(
     target="geoparser",
-    source=["geoparser.cpp", "geometry_container.cpp"],
+    source=["geoparser.cpp", "geometry_container.cpp", "kmeans.cpp"],
     LIBDEPS=[
         "$BUILD_DIR/mongo/base",
         "$BUILD_DIR/mongo/db/bson/dotted_path_support",

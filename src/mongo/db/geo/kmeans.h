@@ -44,7 +44,7 @@ class KMeansClustering {
 public:
     KMeansClustering();
 
-    void ClusterFeatures(WorkingSet* const workingSet);
+    void ClusterFeatures(WorkingSet* const workingSet, const string& field);
 
 private:
     struct Cluster
@@ -54,8 +54,8 @@ private:
     };
 
 private:
-    std::map<WorkingSetID, std::unique_ptr<StoredGeometry> > mapIDtoGeom;
-    std::vector<std::unique_ptr<Cluster> > clusters; 
+    std::vector<std::unique_ptr<StoredGeometry>> geoms; // Element index in the vector is WorkingSetID from WorkingSet
+    std::vector<std::unique_ptr<Cluster>> clusters; 
 };
 
 }  // namespace mongo

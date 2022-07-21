@@ -326,6 +326,10 @@ public:
         return &_data[i].member;
     }
 
+    WorkingSetID getSize() {
+        return _data.size();
+    }
+    
     const WorkingSetMember* get(WorkingSetID i) const {
         dassert(i < _data.size());              // ID has been allocated.
         dassert(_data[i].nextFreeOrSelf == i);  // ID currently in use.
