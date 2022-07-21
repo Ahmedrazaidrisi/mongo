@@ -36,6 +36,7 @@
 #include "mongo/db/geo/shapes.h"
 #include "third_party/s2/s2regionunion.h"
 #include "mongo/db/exec/working_set_common.h"
+#include "mongo/db/geo/geometry_container.h"
 
 namespace mongo {
 
